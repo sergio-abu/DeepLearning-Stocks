@@ -18,3 +18,6 @@ Launch jupyter notebook:
 ```
 jupyter notebook
 ```
+
+##### Example result
+![RESULT](BABA5.png)
