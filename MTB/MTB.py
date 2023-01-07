@@ -13,13 +13,16 @@ from matplotlib.pyplot import figure
 
 from alpha_vantage.timeseries import TimeSeries
 
-print("All libraries loaded")
+API_KEY = "demo" # GET YOUR API KEY https://www.alphavantage.co/support/#api-key OR USE THE DEMO KEY "demo"
+
+
+print("Lock n' load")
 
 # %%
 config = {
     "alpha_vantage": {
-        "key": "5YY9RV8SODFP8FEA", # you can use the demo API key for this project, but please make sure to get your own API key at https://www.alphavantage.co/support/#api-key
-        "symbol": "IBM",
+        "key": API_KEY,
+        "symbol": "MTB",
         "outputsize": "full",
         "key_adjusted_close": "5. adjusted close",
     },
@@ -28,7 +31,7 @@ config = {
         "train_split_size": 0.80,
     },
     "plots": {
-        "xticks_interval": 90, # show a date every 90 days
+        "xticks_interval": 90, # day interval to show date on x axis
         "color_actual": "#001f3f",
         "color_train": "#3D9970",
         "color_val": "#0074D9",
@@ -52,7 +55,7 @@ config = {
 }
 
 def download_data(config):
-    ts = TimeSeries(key='5YY9RV8SODFP8FEA') #you can use the demo API key for this project, but please make sure to eventually get your own API key at https://www.alphavantage.co/support/#api-key.
+    ts = TimeSeries(key=API_KEY)
     data, meta_data = ts.get_daily_adjusted(config["alpha_vantage"]["symbol"], outputsize=config["alpha_vantage"]["outputsize"])
 
     data_date = [date for date in data.keys()]
@@ -81,11 +84,10 @@ plt.xticks(x, xticks, rotation='vertical')
 plt.title("Daily close price for " + config["alpha_vantage"]["symbol"] + ", " + display_date_range)
 plt.grid(b=None, which='major', axis='y', linestyle='--')
 plt.show()
-
 
 # %%
 def download_data(config):
-    ts = TimeSeries(key='demo') #you can use the demo API key for this project, but please make sure to eventually get your own API key at https://www.alphavantage.co/support/#api-key.
+    ts = TimeSeries(key=API_KEY)
     data, meta_data = ts.get_daily_adjusted(config["alpha_vantage"]["symbol"], outputsize=config["alpha_vantage"]["outputsize"])
 
     data_date = [date for date in data.keys()]
@@ -114,6 +116,7 @@ plt.xticks(x, xticks, rotation='vertical')
 plt.title("Daily close price for " + config["alpha_vantage"]["symbol"] + ", " + display_date_range)
 plt.grid(b=None, which='major', axis='y', linestyle='--')
 plt.show()
+
 
 
 # %%
@@ -134,8 +137,6 @@ class Normalizer():
 # normalize
 scaler = Normalizer()
 normalized_data_close_price = scaler.fit_transform(data_close_price)
-
-print('normalized_data_close_price.shape', normalized_data_close_price.shape)
 
 # %%
 def prepare_data_x(x, window_size):
@@ -300,7 +301,6 @@ for epoch in range(config["training"]["num_epoch"]):
 
     print('Epoch[{}/{}] | loss train:{:.6f}, test:{:.6f} | lr:{:.6f}'
               .format(epoch+1, config["training"]["num_epoch"], loss_train, loss_val, lr_train))
-
 # %%
 # here we re-initialize dataloader so the data doesn't shuffled, so we can plot the values by date
 
@@ -376,6 +376,9 @@ plt.grid(b=None, which='major', axis='y', linestyle='--')
 plt.legend()
 plt.show()
 
+"""
+It is also worth noting that model training & evaluation is an iterative process. Please feel free to go back to the model training step to fine-tune the model and re-evaluate the model to see if there is a further performance boost.
+"""
 # %%
 # predict the closing price of the next trading day
 
@@ -417,4 +420,6 @@ plt.legend()
 plt.show()
 
 print("Predicted close price of the next trading day:", round(to_plot_data_y_test_pred[plot_range-1], 2))
+
+
 # %%
