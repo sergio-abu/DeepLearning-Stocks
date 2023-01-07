@@ -19,5 +19,5 @@ Launch jupyter notebook:
 jupyter notebook
 ```
 
-##### Example result (nyse baba)
+##### Example result (NYSE BABA)
 ![RESULT](BABA5.png)
