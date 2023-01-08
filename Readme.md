@@ -1,4 +1,4 @@
-# LSTM model for stock price prediction
+# [LSTM model for stock price prediction](https://github.com/sergio-abu/DeepLearning-Stocks.git)
 
 
 Clone:
